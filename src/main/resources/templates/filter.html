@@ -1,0 +1,224 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+<!-- Theme Made By www.w3schools.com - No Copyright -->
+<title>NDNC Filter</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+<link href="https://fonts.googleapis.com/css?family=Montserrat"
+	rel="stylesheet"></link>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"></link>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="../static/css/style.css"
+	th:href="@{/static/css/style.css}"></link>
+</head>
+<body>
+
+	<!-- Navbar -->
+	<nav class="navbar navbar-default bg_blue">
+		<div class="container">
+			<div class="navbar-header">
+				<form th:action="@{/logout}" th:method="post" class="form-inline">
+					<button class="btn btn-secondary">Logout</button>
+				</form>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+						th:href="@{/create}" class="white_text">Create</a></li>
+					<li><a th:href="@{/filter}" class="white_text">DND</a></li>
+					<li><a href="@{/update}" class="white_text">Refresh</a></li>
+
+					<li><a th:href="@{/filter}" class="white_text">Hello <span
+							sec:authentication="name">Hello Admin 7</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<!-- First Container -->
+	<div class="bg_blue " style="height: 80px; border-top: 7px solid #000;">
+	</div>
+	<div class=" bg-1 ">
+		<div class="container ">
+			<div class="make_shadow">
+				<div class="v1">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<h3>DND Filter</h3>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<table class="dark_red">
+								<tr>
+									<td>Last DND refresh date is</td>
+									<td width="20px;" align="center">:</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Total numbers updated</td>
+									<td width="20px;" align="center">:</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>Total new numbers inserted</td>
+									<td width="20px;" align="center">:</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="v2">
+					<div class="v3">
+						<div class="row">
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<table class="dark_red">
+									<tr>
+										<td>No. of files processed</td>
+										<td width="20px;" align="center">:
+										<span th:text="${agregateAnalyticUO.totalFiles}">10</span>
+										</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Total no. of records</td>
+										<td width="20px;" align="center">:
+										<span th:text="${agregateAnalyticUO.totalRecords}">10</span></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Total Non-NDNC records</td>
+										<td width="20px;" align="center">:
+										<span th:text="${agregateAnalyticUO.totalDNDRecords}">10</span></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Total NDNC records</td>
+										<td width="20px;" align="center">:
+										<span th:text="${agregateAnalyticUO.totalNonDndRecords}">10</span></td>
+										<td></td>
+									</tr>
+								</table>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<div class="holder">
+									<form th:action="@{/filter}" th:method="post"
+										enctype="multipart/form-data" th:object="${filterUO}">
+										<input type="file" th:field="*{file}" size="50"></input>
+										<button type="submit" class="btn btn-primary">Submit</button>
+									</form>
+								</div>
+
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<table class="dark_red">
+									<tr>
+										<td>Max upload files</td>
+										<td width="20px;" align="center">:10</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Max upload records</td>
+										<td width="20px;" align="center">:2,00,000</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>Max file size</td>
+										<td width="20px;" align="center">:5MB</td>
+										<td></td>
+									</tr>
+
+								</table>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="v4">
+						<div class="row">
+							<div class="col-md-4 col-sm-6 col-xs-12">
+								<span class="dark_red"><b>Processed File with NDNC
+										and NDNC Numbers</b></span>
+							</div>
+							<form>
+								<div class="col-md-4 col-sm-6 col-xs-12">
+									<span class="brown_red font_16"><b>Date Search From:</b></span>
+									<input type="date" name="selected_date" id="datepicker"
+										placeholder="yyyy-MM-dd"></input>
+								</div>
+								<div class="col-md-4 col-sm-6 col-xs-12">
+									<span class="brown_red font_16"><b>To:</b></span> <input
+										type="date" name="selected_date" id="datepicker1"
+										placeholder="yyyy-MM-dd"></input>
+									<button type="button">Search</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="v5">
+						<div class="table-responsive">
+							<table class="table black">
+								<thead>
+									<tr>
+										<th>S.N</th>
+										<th>Uploaded File</th>
+										<th>Processed File</th>
+										<th>Upload Time</th>
+										<th>Records</th>
+										<th colspan="2">Downloads</th>
+										<th>Status</th>
+									</tr>
+									<tr>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th>DND</th>
+										<th>Non DND</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="file, stat : ${allfiles}">
+										<td th:text="${stat.count}">1</td>
+										<td th:text="${file.rawFilePath}">Anna</td>
+										<td th:text="${file.rawFilePath}">Pitt</td>
+										<td th:text="${file.uploadedOn}">35</td>
+										<td th:text="${file.totalNumbers}">New York</td>
+										<td>
+											<a th:href="@{${file.dndFilteredFilePath}}">
+												<span th:text="${file.dndNumbers}">DND</span>
+											</a>
+										</td>
+										<td>
+										<a th:href="@{${file.nonDndFilteredFilePath}}">
+											<span th:text="${file.nonDndNumbers}">Non DND</span>
+										</a>
+										</td>
+										<td th:text="${file.status}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

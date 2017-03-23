@@ -1,0 +1,87 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+plugins {
+    id "fi.evident.beanstalk" version "0.0.7"
+}
+
+version = '1-0-0-SNAPSHOT'
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+
+war {
+	baseName = 'sms-ndnc'
+	version = '1.0.0-SNAPSHOT'
+	archiveName = 'ROOT.war'
+	
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	providedRuntime
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+
+	compile('org.projectlombok:lombok')
+	compile('org.springframework.boot:spring-boot-starter-mail')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
+	
+	compile('org.springframework.cloud:spring-cloud-aws-context')
+	compile('org.springframework.cloud:spring-cloud-aws-autoconfigure:1.1.3.RELEASE')
+	
+	compile('org.springframework.boot:spring-boot-starter-batch')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('commons-pool:commons-pool')
+	compile("org.apache.commons:commons-csv:1.4")
+	runtime('mysql:mysql-connector-java')
+	
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+beanstalk {
+ //   profile = 'my-profile' // Only required if using .aws/credentials
+    s3Endpoint = "s3-ap-south-1.amazonaws.com"
+    beanstalkEndpoint = "elasticbeanstalk.ap-south-1.amazonaws.com"
+
+    deployments {
+        // Example to deploy to the same env
+        staging {
+            war = tasks.war
+            application = 'sms'
+            environment = 'ndnc'
+        }
+        // Example to create a new env for each version (to use URL swapping for blue/green deployment)
+        // production {
+        //    war = tasks.productionWar
+        //    application = 'my-app'
+        //    environment = "my-app-${project.version.replaceAll('\\.', '-')}"
+         //   template = 'default' // Saved configuration name to use to create each env
+        //}
+    }
+}

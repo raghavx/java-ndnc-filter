@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+<link rel="stylesheet" href="../static/css/filter.css"
+	th:href="@{/static/css/filter.css}"></link>
+
+<link rel="stylesheet" href="../static/css/style.css"
+	th:href="@{/static/css/style.css}"></link>
+
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-default bg_blue">
+		<div class="container">
+			<div class="navbar-header">
+				<form th:action="@{/logout}" th:method="post" class="form-inline">
+					<button class="btn btn-secondary">Logout</button>
+				</form>
+
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li sec:authorize="hasRole('ROLE_ADMIN')"><a
+						th:href="@{/create}" class="white_text">Create</a></li>
+					<li><a th:href="@{/filter}" class="white_text">DND</a></li>
+					<li><a href="@{/update}" class="white_text">Refresh</a></li>
+					<li><a th:href="@{/filter}" class="white_text">Hello <span
+							sec:authentication="name">Hello Admin 7</span></a></li>
+				</ul>
+
+			</div>
+		</div>
+	</nav>
+
+	<div class="boxs"></div>
+	<div class="container well">
+
+		<form class="form-horizontal col-lg-4" th:action="@{/create}"
+			th:method="post" th:object="${user}">
+
+			<div class="form-group">
+				<label class="control-label">User name</label> <input type="text"
+					class="form-control" th:field="*{username}"></input>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Password</label> <input type="text"
+					class="form-control" th:field="*{password}"></input>
+			</div>
+			<div class="row">
+
+
+				<div class="form-group col-lg-3">
+					<div class="col-sm-offset-0 col-sm-10">
+						<div class="checkbox">
+							<label> <input type="checkbox" th:field="*{rental}"></input> Rental
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group col-lg-9">
+					<label class="col-sm-6 control-label">Initial credit</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" th:field="*{credit}"></input>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-0 col-sm-10">
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</div>
+		</form>
+		<div class="col-lg-1"></div>
+		<div class="col-lg-3">
+			<p>For rental users the initial credit will be ignored!!</p>
+		</div>
+
+	</div>
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>User name</th>
+						<th>Password</th>
+						<th>Rental</th>
+						<th>Credit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="data,stat : ${users}">
+						<td th:text="${stat.count}">1</td>
+						<td th:text="${data.username}">User anme</td>
+						<td th:text="${data.password}">Password</td>
+						<td th:text="${data.rental}">Rental</td>
+						<td th:text="${data.credit}">credit</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>
